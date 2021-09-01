@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8"/>
     <title>Map</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 
 /*
@@ -14,41 +15,60 @@
       padding: 0px;
   }
   
-
+  #map {
+      height: 100%;
+      background-color: #dff;
+  }
   
 </style>
   </head>
   <body>
-    <h1>Google Map</h1>
-    <ul id="loc">here!</ul>
+    <h1>Geolocation</h1>
+    <dl id="disp"></dl>
 <script>
 
-  window.addEventListener("DOMContentLoaded", (event) => {
+  //  https://kkblab.com/make/javascript/gps.html
 
+  window.addEventListener('DOMContentLoaded', (event) => {
+
+      var disp = document.querySelector("#disp");
       var id;
-      var loc = document.getElementById("loc");
+      var cnt = 0;
+      var str = "";
 
       if(navigator.geolocation) {
 
-	  id = navigator.geolocation.watchPosition(function(pos) {
+	  id = navigator.geolocation.watchPosition((pos) => {
+	      console.log(1);
 	      var lat = pos.coords.latitude;
 	      var lng = pos.coords.longitude;
+	      var acc = pos.coords.accuracy;
+	      var ts = pos.timestamp;
+	      var dt = new Date(ts);
 
-	      var str = "<li>lat: " + lat + "</li>";
-	      str += "<li>lng: " + lng + "</li>";
+	      var title = ["回数:", "時間:", "緯度:", "経度:", "精度:"];
+	      var arr = [(++cnt), dt.toLocaleString(), lat, lng, acc];
+	      str = "";
+	      for(var i = 0; i < arr.length; i++) {
+		  str += "<dt>" + title[i] + "</dt><dd>" + arr[i] + "</dd>";
+	      }
 
-	      console.log(str);
-	      loc.innerHTML = str;
-
-	  }, null, {
+	      disp.innerHTML = str;
+	      
+	  }, (e) => {
+	      disp.innerHTML = e.message;
+	  }, {
 	      enableHighAccuracy: true
 	  });
+	  
       }else {
-	  alert("not supported.");
+	  disp.innerHTML = "<p>not support</p>";
       }
 
   });
+
   
 </script>
- </body>
+
+  </body>
 </html>
