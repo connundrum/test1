@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Map</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+
+/*
+
+*/
+  html, body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+  }
+  
+  #map {
+      height: 100%;
+      background-color: #dff;
+  }
+  
+</style>
+  </head>
+  <body>
+    <h1>Google Map</h1>
+    <div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAVSsFlvHUh1bV_X_0jMAUdPEg0Js0sqI8"></script>
+<script>
+
+  google.maps.event.addDomListener(window, 'load', init());
+
+  function show(pls) {
+      var map = new google.maps.Map(document.getElementById('map'), {
+	  center: pls,
+	  zoom: 10
+      });
+      return map;
+  }
+
+  function base(pls) {
+      var map = show(pls);
+      return map;
+  }
+
+  function init() {
+
+      if(navigator.geolocation) {
+
+	  navigator.geolocation.watchPosition((pos) => {
+	      //console.log(pos);
+	      var lat = pos.coords.latitude;
+	      var lng = pos.coords.longitude;
+
+	      console.log(lat, lng);
+
+	      var here = {lat: lat, lng: lng};
+	      
+	      var map = base(here);
+		  var mark = new google.maps.Marker({
+		      map: map,
+		      position: here,
+		      icon: {
+			  fillColor: "#4444ff",                
+			  fillOpacity: 0.8,                    
+			  path: google.maps.SymbolPath.CIRCLE, 
+			  scale: 8,                           
+			  strokeColor: "#ffffff",              
+			  strokeWeight: 3.0                    
+		      }
+		  });
+	  });
+
+      }else {
+	  alert("not support");
+      }
+      
+  }
+  
+</script>
+
+  </body>
+</html>
