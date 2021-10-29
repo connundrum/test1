@@ -17,12 +17,14 @@
 
       var res = document.querySelector("#res");
       var str = "";
+　　　 var cnt = 1;
 
       if(navigator.geolocation) {
 
 	  navigator.geolocation.watchPosition((pos) => {
 
-	      for(var key in pos.coords) {
+		str += "<b>" + cnt + "回</b>\n";
+		for(var key in pos.coords) {
 		  //console.log(key);
 		  str += "<p><b>" + key + "</b>: " + pos.coords[key]  + "</p>\n";
 	      }
