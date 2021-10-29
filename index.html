@@ -2,76 +2,48 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8"/>
-  <title>geolocation</title>
-<style>
-
-  html, body {
-      height: 100%;
-      margin: 0px;
-      padding: 0px;
-  }
-  
-  #map {
-      height: 100%;
-      background-color: #dff;
-  }
-  
-</style>
+  <title>Document</title>
 </head>
 <body>
-  <h1>map</h1>
+<div id="cont">
+  <h1>Map</h1>
   <div id="res"></div>
-  <div id="map"></div>
+</div>
 <script>
 
   //
-  var map = null;
-  var mark = null;
-  var cnt = 0;
-  
+
   window.addEventListener('DOMContentLoaded', () => {
 
-      var canv = document.getElementById("map");
-      var res = document.getElementById("res");
+      var res = document.querySelector("#res");
+      var str = "";
 
       if(navigator.geolocation) {
 
 	  navigator.geolocation.watchPosition((pos) => {
 
-	      var lat = pos.coords.latitude;
-	      var lng = pos.coords.longitude;
+	      for(var key in pos.coords) {
+		  //console.log(key);
+		  str += "<p><b>" + key + "</b>: " + pos.coords[key]  + "</p>\n";
+	      }
 
-	      var latlng = {lat: lat, lng: lng};
-	      
-	      map = new google.maps.Map(canv, {
-		  center: latlng,
-		  zoom: 11
-	      });
-
-	      mark = new google.maps.Marker({
-		  position: latlng,
-		  map: map
-	      });
-
-	      cnt++;
-	      var str = "<b>" + cnt + "回</b>\n";
-	      str += "<p><b>lat: </b>" + lat + " <b>lng: </b>" + lng + "</p>\n";
-	      str += new Date(pos.timestamp).toLocaleString();
-	      str += "\n<hr/>\n";
+	      str += "<p>" + new Date(pos.timestamp).toLocaleString() + "</p>\n"
+	      str += "<hr/>\n";
 
 	      res.innerHTML = str;
-	      console.log(str);
 
-	  },(err) => {
+	  }, (err) => {
 
 	      console.log(err);
 
 	  });
-	  
+
       }
 
   });
-  
+
+
 </script>
 </body>
 </html>
+
